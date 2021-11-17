@@ -16,7 +16,7 @@ public class Main {
     public void start() {
 
         try {
-            DataSource dataSource = getDataSource();
+            DataSource dataSource = getDataSourceForVitessLocal();
             SequencesService sequencesService = new SequencesService(dataSource);
             int seq1 = sequencesService.nextValue("SEQ1");
 
@@ -29,11 +29,21 @@ public class Main {
 
     }
 
-    DataSource getDataSource() throws SQLException {
+    DataSource getDataSourceForVitessTest() throws SQLException {
         MysqlDataSource dataSource = new MysqlDataSource();
         dataSource.setDatabaseName("unsharded");
         dataSource.setServerName("localhost");
         dataSource.setPort(33577);
+        dataSource.setUser("root");
+
+        return dataSource;
+    }
+
+    DataSource getDataSourceForVitessLocal() throws SQLException {
+        MysqlDataSource dataSource = new MysqlDataSource();
+        dataSource.setDatabaseName("commerce");
+        dataSource.setServerName("localhost");
+        dataSource.setPort(15306);
         dataSource.setUser("root");
 
         return dataSource;
