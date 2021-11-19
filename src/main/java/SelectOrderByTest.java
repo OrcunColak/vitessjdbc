@@ -9,7 +9,7 @@ import static java.sql.ResultSet.TYPE_SCROLL_SENSITIVE;
 
 public class SelectOrderByTest {
 
-    private static final String SQL_QUERY = "SELECT * FROM product";
+    private static final String SQL_QUERY = "SELECT * FROM product order by price";
 
 
     public void test(Connection connection) throws SQLException {

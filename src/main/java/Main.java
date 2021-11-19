@@ -20,7 +20,7 @@ public class Main {
 //            DataSource dataSource = getDataSourceForVitessLocal();
 //            testSequence(dataSource);
 
-            testOrderBy();
+            testOrderByVitessLocalMySQL();
 
 
         } catch (SQLException exception) {
@@ -35,7 +35,15 @@ public class Main {
         SequencesService sequencesService = new SequencesService(dataSource);
         int seq1 = sequencesService.nextValue("SEQ1");
     }
-    private void testOrderBy() throws SQLException {
+
+    private void testOrderByVitessLocalMySQL() throws SQLException {
+        DataSource dataSourceForMySQLLocal = getDataSourceForVitessLocal();
+        Connection connection = dataSourceForMySQLLocal.getConnection();
+        SelectOrderByTest sequencesService = new SelectOrderByTest();
+        sequencesService.test(connection);
+    }
+
+    private void testOrderByLocalMySQL() throws SQLException {
         DataSource dataSourceForMySQLLocal = getDataSourceForMySQLLocal();
         Connection connection = dataSourceForMySQLLocal.getConnection();
         SelectOrderByTest sequencesService = new SelectOrderByTest();
@@ -74,6 +82,7 @@ public class Main {
         dataSource.setServerName("localhost");
         dataSource.setPort(15306);
         dataSource.setUser("root");
+
 
         return dataSource;
     }

@@ -2,6 +2,7 @@ version: '3.1'
 services:
   db:
     image: mysql
+    container_name : resources-db-1
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: root
