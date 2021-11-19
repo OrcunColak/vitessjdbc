@@ -1,3 +1,4 @@
+
 import com.mysql.cj.jdbc.MysqlDataSource;
 
 import javax.sql.DataSource;
@@ -16,9 +17,10 @@ public class Main {
     public void start() {
 
         try {
-            DataSource dataSource = getDataSourceForVitessLocal();
-            SequencesService sequencesService = new SequencesService(dataSource);
-            int seq1 = sequencesService.nextValue("SEQ1");
+//            DataSource dataSource = getDataSourceForVitessLocal();
+//            testSequence(dataSource);
+
+            testOrderBy();
 
 
         } catch (SQLException exception) {
@@ -27,6 +29,27 @@ public class Main {
         }
 
 
+    }
+
+    private void testSequence(DataSource dataSource) throws SQLException {
+        SequencesService sequencesService = new SequencesService(dataSource);
+        int seq1 = sequencesService.nextValue("SEQ1");
+    }
+    private void testOrderBy() throws SQLException {
+        DataSource dataSourceForMySQLLocal = getDataSourceForMySQLLocal();
+        Connection connection = dataSourceForMySQLLocal.getConnection();
+        SelectOrderByTest sequencesService = new SelectOrderByTest();
+        sequencesService.test(connection);
+    }
+
+
+
+
+
+    //*******************Vitess Test Image*******************
+    Connection connectVitessTest() throws SQLException {
+        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:33577/");
+        return connection;
     }
 
     DataSource getDataSourceForVitessTest() throws SQLException {
@@ -39,6 +62,12 @@ public class Main {
         return dataSource;
     }
 
+    //*******************Vitess Local Image*******************
+    Connection connectVitessLocal() throws SQLException {
+        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:15306/");
+        return connection;
+    }
+
     DataSource getDataSourceForVitessLocal() throws SQLException {
         MysqlDataSource dataSource = new MysqlDataSource();
         dataSource.setDatabaseName("commerce");
@@ -49,8 +78,20 @@ public class Main {
         return dataSource;
     }
 
-    Connection connect() throws SQLException {
-        Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:33577/");
+    //*******************Local connection*******************
+    Connection connectMySQLLocal() throws SQLException {
+        Connection connection = DriverManager.getConnection("jdbc:mysql://root:root@localhost:3307/commerce");
         return connection;
+    }
+
+    DataSource getDataSourceForMySQLLocal() throws SQLException {
+        MysqlDataSource dataSource = new MysqlDataSource();
+        dataSource.setDatabaseName("commerce");
+        dataSource.setServerName("localhost");
+        dataSource.setPort(3307);
+        dataSource.setUser("root");
+        dataSource.setPassword("root");
+
+        return dataSource;
     }
 }
